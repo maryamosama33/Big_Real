@@ -13,15 +13,13 @@ void BigReal :: check_divide(string num)
     if (is_valid(num))
     {
         int pos = num.find('.');
-        decimal = num.substr(0,pos);
-        fraction = num.substr(pos+1);
+        *decimal = num.substr(0,pos);
+        *fraction = num.substr(pos+1);
 
         if (num[0] == '+' || isdigit(num[0]))
             sign = '+';
         else
             sign = '-';
-
-        Num = num;
     }
     else
     {
@@ -53,19 +51,19 @@ BigReal :: BigReal(BigDecimalInt bigInteger)
 // Copy constructor
 BigReal :: BigReal(const BigReal& other)
 {
-   Num = other.Num;
-   decimal = other.decimal;
-   fraction = other.fraction;
+   *decimal = *other.decimal;
+   *fraction = *other.fraction;
    sign = other.sign;
 }
 //-------------------------------------------------------------------------
 // Move constructor
 BigReal :: BigReal(BigReal&& other)
 {
-  Num = move(other.Num);
-  decimal = move(other.decimal);
-  fraction = move(other.fraction);
-  sign = move(other.sign);
+  decimal = other.decimal;
+  fraction = other.fraction;
+  sign = other.sign;
+  other.decimal = nullptr;
+  other.fraction = nullptr;
 }
 //------------------------------------------------------------------------
 // Assignment operator
@@ -73,9 +71,8 @@ BigReal &BigReal :: operator = (BigReal &other)
 {
     if(this != &other)
     {
-        this->Num=other.Num;
-        this->decimal = other.decimal;
-        this->fraction = other.fraction;
+        *this->decimal = *other.decimal;
+        *this->fraction = *other.fraction;
         this->sign = other.sign;
     }
     return *this;
@@ -86,10 +83,11 @@ BigReal &BigReal :: operator = (BigReal &&other)
 {
     if(this != &other)
     {
-        this->Num= move(other.Num);
-        this->decimal = move(other.decimal);
-        this->fraction = move(other.fraction);
-        this->sign = move(other.sign);
+        this->decimal = other.decimal;
+        this->fraction = other.fraction;
+        this->sign = other.sign;
+        other.decimal = nullptr;
+        other.fraction = nullptr;
     }
     return *this;
 }
