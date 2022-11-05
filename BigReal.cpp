@@ -1,7 +1,5 @@
 #include "BigReal.h"
 
-#include <utility>
-
 //function to check if real number is valid.
 bool BigReal :: is_valid(string realNumber)
 {
