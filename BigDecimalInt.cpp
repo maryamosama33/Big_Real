@@ -1,4 +1,3 @@
-
 #include "BigDecimalInt.h"
 
 // regex function that checks the validation of the input.

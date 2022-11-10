@@ -1,5 +1,6 @@
-
 #include "BigReal.h"
+#include "BigDecimalInt.cpp"
+
 
 //function to check if real number is valid.
 bool BigReal :: is_valid(string realNumber)
@@ -13,17 +14,34 @@ void BigReal :: check_divide(string num)
 {
     if (is_valid(num))
     {
+        if(num[num.size()-1]=='.'){
+            num = num+'0';
+        }
+        if(num[0]=='.'){
+            num = '0'+num;
+        }
         if (num[0] == '+' || isdigit(num[0]))
             sign = '+';
         else
             sign = '-';
 
+        
+
         int pos = num.find('.');
         if(*num.begin()=='-' ){
             num[0]='+';
         }
+        
+
+
         *decimal = num.substr(0,pos);
         *fraction = num.substr(pos+1);
+        if(pos<0){
+            string zero="0";
+            *decimal=num;
+            *fraction =zero ;
+        }
+
     }
     else
     {
@@ -146,9 +164,7 @@ BigReal BigReal :: operator + (const BigReal &other)
             }
         }
         else {
-
             if (*other.decimal > *decimal) {
-
                 *sum.decimal = *other.decimal - *decimal;
                 string original1 = other.fraction->getnum();
                 string original2 = fraction->getnum();
@@ -337,18 +353,139 @@ BigReal BigReal ::operator - (const BigReal &other)
     return sum;
 }
 //-----------------------------------------------------------------------------
-// to print
-string BigReal::getnum() {
-    string s="";
-    s+=sign;
-     s+=decimal->getnum();
-    s+=".";
-    s+=fraction->getnum();
-     cout<<s;
-}
-//-----------------------------------------------------------------------------
 // set sign
 void BigReal::set_sign(char s) {
     sign=s;
+}
+//------------------------------------------------------------------------------------
+bool BigReal::operator< (BigReal anothorReal){
+    if(sign=='-' and anothorReal.sign =='+'){
+        return true;
+    }
+    else if(anothorReal.sign=='-' and sign =='+'){
+        return false;
+    }
+    if(sign=='+' and anothorReal.sign =='+'){
+        if(*decimal<*anothorReal.decimal){
+            return true;
+        }
+        else if(*decimal>*anothorReal.decimal){
+            return false;
+        }
+        else if (*decimal==*anothorReal.decimal){
+            if(*fraction < *anothorReal.fraction){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+    }
+    if (sign=='-' and anothorReal.sign =='-'){
+        if(*decimal<*anothorReal.decimal){
+            return false;
+        }
+        else if(*decimal>*anothorReal.decimal){
+            return true;
+        }
+        else if (*decimal==*anothorReal.decimal){
+            if(*fraction > *anothorReal.fraction){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+
+    }
+
+    return true;
+}
+//------------------------------------------------------------------------------------
+bool BigReal::operator== (BigReal anothorReal){
+    if(sign==anothorReal.sign)
+    {if(*decimal == *anothorReal.decimal){
+        if(*fraction==*anothorReal.fraction){
+            return true;
+        }
+    }
+    }
+    return false;
+}
+//------------------------------------------------------------------------------------
+ostream& operator<< (ostream& out , BigReal num){
+
+    if(num.sign=='-')
+    out<<num.sign;
+    out<<*num.decimal<<'.'<<*num.fraction;
+    return out;
+}
+bool BigReal::operator> (BigReal anothorReal){
+   string comp1 = "", comp2 = "" , num1="" , num2="";
+    long long len1 = (fraction)->size(), len2 = (anothorReal.fraction)->size();
+    while (len1 < len2){
+        comp1 += '0';
+        len1++;
+    }
+    while (len2 < len1){
+        comp2 += '0';
+        len2++;
+    }
+    num1 = fraction->getnum()+ comp1;
+    num2 = anothorReal.fraction->getnum()+ comp2;
+    *fraction = num1;
+    *anothorReal.fraction = num2;
+    if(sign=='-' and anothorReal.sign =='+'){
+        return false;
+    }
+    else if(anothorReal.sign=='-' and sign =='+'){
+        return true;
+    }
+    if(sign=='+' and anothorReal.sign =='+'){
+        if(*decimal<*anothorReal.decimal){
+            return false;
+        }
+        else if(*decimal>*anothorReal.decimal){
+            return true;
+        }
+        else if (*decimal==*anothorReal.decimal){
+            if(*fraction > *anothorReal.fraction){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+    }
+    if (sign=='-' and anothorReal.sign =='-'){
+        if(*decimal<*anothorReal.decimal){
+            return true;
+        }
+        else if(*decimal>*anothorReal.decimal){
+            return false;
+        }
+        else if (*decimal==*anothorReal.decimal){
+            if(*fraction < *anothorReal.fraction){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+
+    }
+    return true;
+}
+//------------------------------------------------------------------------------------
+int BigReal::size(){
+    return fraction->size() + decimal->size() ;
+}
+//------------------------------------------------------------------------------------
+istream& operator>> (istream& in , BigReal& num){
+    string number;
+    in>>number;
+    num = BigReal(number);
+    
+    return in;
 }
 //------------------------------------------------------------------------------------

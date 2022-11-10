@@ -28,9 +28,17 @@ public:
     char get_sign(){
         return sign;
     }
-    string getnum();
     BigReal operator+ (const BigReal& other);
     BigReal operator- (const BigReal& other);
+    bool operator< (BigReal anothorReal);
+    bool operator> (BigReal anothorReal);
+    bool operator== (BigReal anothorReal);
+    int size();
+    friend ostream& operator<< (ostream& out , BigReal num);
+    friend istream& operator>> (istream& in , BigReal& num);
+
+
+
 };
 
 #endif
