@@ -154,6 +154,15 @@ string addition(string num1,string num2)
     {
         res = char((carry) + '0') + res;
     }
+
+    for(int i=res.size();i>0;i--){
+        if(res[i]=='0'){
+            res.erase(res.begin());
+        }
+        else{
+            break;
+        }
+    }
     return res;
 }
 
@@ -179,6 +188,14 @@ string subtraction(string num1,string num2){
     for (auto i : d)
     {
         res += to_string(i);
+    }
+    for(int i=res.size();i>0;i--){
+        if(res[i]=='0'){
+            res.erase(res.begin());
+        }
+        else{
+            break;
+        }
     }
     return res;
 }

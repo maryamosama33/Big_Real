@@ -1,3 +1,7 @@
+#ifndef MAIN_CPP_BIGDECIMALINT_H
+#define MAIN_CPP_BIGDECIMALINT_H
+
+
 #ifndef BIGREAL_BIGDECIMALINT_H
 #define BIGREAL_BIGDECIMALINT_H
 
@@ -26,6 +30,7 @@ public:
     int Sign();
     void push_back(char ch);
     void push_front(char ch);
+
     BigDecimalInt(){}
     BigDecimalInt(string num)
     {
@@ -35,14 +40,15 @@ public:
     {
         if(sign=='-')
         {
-            string res=sign+number;
+            string res=number;
             return res;
         }
         else
             return number;
-
     }
-
 };
 
 #endif
+
+
+#endif //MAIN_CPP_BIGDECIMALINT_H
