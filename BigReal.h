@@ -1,3 +1,6 @@
+#ifndef MAIN_CPP_BIGREAL_H
+#define MAIN_CPP_BIGREAL_H
+
 #ifndef BIGREAL_BIGREAL_H
 #define BIGREAL_BIGREAL_H
 
@@ -21,11 +24,23 @@ public:
     BigReal (BigReal&& other);
     BigReal& operator= (BigReal& other);
     BigReal& operator= (BigReal&& other);
-    BigReal operator+ (BigReal& other);
-    BigReal operator- (BigReal& other);
+    void set_sign(char s);
+    char get_sign(){
+        return sign;
+    }
+    BigReal operator+ (const BigReal& other);
+    BigReal operator- (const BigReal& other);
+    bool operator< (BigReal anothorReal);
+    bool operator> (BigReal anothorReal);
+    bool operator== (BigReal anothorReal);
+    int size();
+    friend ostream& operator<< (ostream& out , BigReal num);
+    friend istream& operator>> (istream& in , BigReal& num);
+
 
 
 };
 
 #endif
 
+#endif //MAIN_CPP_BIGREAL_H
